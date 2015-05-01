@@ -2,6 +2,7 @@ package br.com.buritech.agendaescolar;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -12,6 +13,25 @@ public class ProfessorForm extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.professorformlayout);
+        Log.d("CICLO DE VIDA", "Executou o método onCreate()");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("CICLO DE VIDA", "Executou o método onStart()");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("CICLO DE VIDA", "Executou o método onResume()");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("CICLO DE VIDA", "Executou o método onPause()");
     }
 
     @Override
