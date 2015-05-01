@@ -1,19 +1,52 @@
 package br.com.buritech.agendaescolar;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
+import br.com.buritech.agendaescolar.bean.Professor;
+import br.com.buritech.agendaescolar.helper.ProfessorHelper;
 
 
 public class ProfessorForm extends ActionBarActivity {
+    //Lista de atributos atualizada
+    private Button botao;
+    //Objeto Helper
+    private ProfessorHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.professorformlayout);
         Log.d("CICLO DE VIDA", "Executou o método onCreate()");
+        //Configuração para exibir o ícone da aplicação
+        getSupportActionBar().setIcon(R.drawable.ic_launcher);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME
+                | ActionBar.DISPLAY_SHOW_TITLE);
+        getSupportActionBar().setTitle(R.string.tituloProfessorForm);
+
+        botao = (Button)findViewById(R.id.sbSalvar);
+        //Criação do Helper
+        helper = new ProfessorHelper(this);
+
+        botao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Solicitação de serviço do helper
+                Professor professor = helper.getProfessor();
+                //Impressõe bseada em métodos do professor
+                Log.d("SALVAR", professor.getNome());
+                Log.d("SALVAR", professor.getTelefone());
+                Log.d("SALVAR", professor.getSite());
+                Log.d("SALVAR", professor.getEmail());
+                Log.d("SALVAR", professor.getEndereco());
+            }
+        });
     }
 
     @Override

@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">Agenda Escolar</string>
-
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="tituloProfessorForm">Dados do Professor</string>
+    <string name="fotoProfessorDesc">Foto do professor</string>
+    <string name="nome">Nome</string>
+    <string name="nomeProfessorHint">Nome completo</string>
+    <string name="fone">Telefone</string>
+    <string name="foneProfessorHiht">Telefone do professor</string>
+    <string name="site">Site</string>
+    <string name="siteHint">www.exemplo.com.br</string>
+    <string name="email">Email</string>
+    <string name="emailHint">nome@exemplo.com.br</string>
+    <string name="endereco">Endereço</string>
+    <string name="enderecoHint">rua, número, bairro</string>
+    <string name="salvarDados">Salvar dados</string>
+    <string name="tituloProfessorLista">Professores</string>
 </resources>
