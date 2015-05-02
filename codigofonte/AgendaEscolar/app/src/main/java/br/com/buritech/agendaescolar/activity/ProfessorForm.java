@@ -36,7 +36,13 @@ public class ProfessorForm extends ActionBarActivity {
         botao = (Button) findViewById(R.id.sbSalvar);
         //Criação do Helper
         helper = new ProfessorHelper(this);
-
+        //Recuperando o professor passado como parâmetro
+        Professor professor = (Professor)getIntent().getSerializableExtra(
+                "PROFESSOR_SELECIONADO");
+        //Verifica se é necessário atualizar a tela com dados do professor
+        if(professor!=null){
+            helper.setProfessor(professor);
+        }
         botao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,8 +50,13 @@ public class ProfessorForm extends ActionBarActivity {
                 Professor professor = helper.getProfessor();
                 // Criação do Objeto DAO e início da conexão com o BD
                 ProfessorDAO dao = new ProfessorDAO(ProfessorForm.this);
-                // Chamada do método de cadastro de professor
-                dao.cadastrar(professor);
+                if(professor.getId()==null){
+                    // Chamada do método de cadastro de professor
+                    dao.cadastrar(professor);
+                }else{
+                    // Atualizar dados do professor
+                    dao.alterar(professor);
+                }
                 // Encerramento da conexão com o BD
                 dao.close();
                 //Feedback para o usuário com a mensagem de sucesso

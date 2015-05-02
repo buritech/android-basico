@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +64,14 @@ public class ProfessorLista extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Toast.makeText(ProfessorLista.this, "[Click simples] " + listaDeProfessores.get(position), Toast.LENGTH_LONG).show();
+                //Pega a referência para o professor selecionado
+                professorSelecionado = listaDeProfessores.get(position);
+                Intent form = new Intent(ProfessorLista.this,
+                        ProfessorForm.class);
+                //Passagem de parâmetros
+                form.putExtra("PROFESSOR_SELECIONADO", professorSelecionado);
+                //Iniciar a nova Activity
+                startActivity(form);
             }
         });
 
@@ -150,13 +156,14 @@ public class ProfessorLista extends ActionBarActivity {
 
     /**
      * Chamado quando um item do menu de contexto for selecionado
+     *
      * @param item Objeto selecionado
      * @return false para peritir o processamento do item clicado
      */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         Intent intent;
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.itemMenuContextoExcluir:
                 excluir();
                 break;
@@ -194,7 +201,7 @@ public class ProfessorLista extends ActionBarActivity {
                 //Marcação para envio de email
                 intent.setType("message/rfc822");
                 intent.putExtra(Intent.EXTRA_EMAIL,
-                        new String[] { professorSelecionado.getEmail() });
+                        new String[]{professorSelecionado.getEmail()});
                 intent.putExtra(Intent.EXTRA_SUBJECT, "Falando sobre o curso");
                 intent.putExtra(Intent.EXTRA_TEXT, "O curso foi muito legal");
                 startActivity(intent);
@@ -209,11 +216,11 @@ public class ProfessorLista extends ActionBarActivity {
      * Exclui o professor do banco de dados e
      * atualiza a listagem
      */
-    private void excluir(){
+    private void excluir() {
         //Criação do componente de confirmação de exclusão
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         //Configuração da mensagem
-        builder.setMessage("Confirma a exclusão de: "+professorSelecionado.getNome()+"?");
+        builder.setMessage("Confirma a exclusão de: " + professorSelecionado.getNome() + "?");
         //Configuração do botão de confirmação da exclusão
         builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             @Override

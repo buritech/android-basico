@@ -1,9 +1,11 @@
 package br.com.buritech.agendaescolar.model.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by marciopalheta on 01/05/15.
  */
-public class Professor {
+public class Professor implements Serializable{
     private Long id;
     private String nome;
     private String telefone;

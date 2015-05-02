@@ -144,5 +144,26 @@ public class ProfessorDAO extends SQLiteOpenHelper {
 
         Log.i(TAG_LOGCAT, "Professor excluído: " + professor.getNome());
     }
+
+    /**
+     * Chamado para atualização de dados do professor
+     * @param professor O professor a ser atualizado
+     */
+    public void alterar(Professor professor) {
+        ContentValues values = new ContentValues();
+        values.put("nome", professor.getNome());
+        values.put("telefone", professor.getTelefone());
+        values.put("endereco", professor.getEndereco());
+        values.put("site", professor.getSite());
+        values.put("email", professor.getEmail());
+        values.put("foto", professor.getFoto());
+
+        // Colecao de valores de parametros do SQL
+        String[] args = { professor.getId().toString() };
+
+        // Altera dados do Professor no BD
+        getWritableDatabase().update(TABELA, values, "id=?", args);
+        Log.i(TAG_LOGCAT, "Professor alterado: " + professor.getNome());
+    }
 }
 
