@@ -1,6 +1,11 @@
 package br.com.buritech.agendaescolar.activity;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -9,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.io.File;
 
 import br.com.buritech.agendaescolar.R;
 import br.com.buritech.agendaescolar.helper.ProfessorHelper;
@@ -21,6 +28,11 @@ public class ProfessorForm extends ActionBarActivity {
     private Button botao;
     //Objeto Helper
     private ProfessorHelper helper;
+
+    //Path para o arquivo de foto do professor
+    private String localArquivoFoto;
+    //Constante usada como requestCode
+    private static final int FAZER_FOTO_PROFESSOR = 12345;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +55,21 @@ public class ProfessorForm extends ActionBarActivity {
         if(professor!=null){
             helper.setProfessor(professor);
         }
+        //Configuração de click da imagem
+        helper.getFoto().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                localArquivoFoto = Environment.getExternalStorageDirectory()
+                        + "/" + System.currentTimeMillis() + ".jpg";
+                File arquivo = new File(localArquivoFoto);
+                //URI que informa onde o arquivo resultado deve ser salvo
+                Uri localFoto = Uri.fromFile(arquivo);
+                Intent irParaCamera = new Intent(
+                        MediaStore.ACTION_IMAGE_CAPTURE);
+                irParaCamera.putExtra(MediaStore.EXTRA_OUTPUT, localFoto);
+                startActivityForResult(irParaCamera, FAZER_FOTO_PROFESSOR);
+            }
+        });
         botao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +96,20 @@ public class ProfessorForm extends ActionBarActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == FAZER_FOTO_PROFESSOR) {
+            if (resultCode == Activity.RESULT_OK) {
+                helper.carregarFoto(localArquivoFoto);
+            }else{
+                localArquivoFoto = null;
+            }
+        }
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         Log.d("CICLO DE VIDA", "Executou o método onStart()");
@@ -78,6 +119,37 @@ public class ProfessorForm extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         Log.d("CICLO DE VIDA", "Executou o método onResume()");
+    }
+
+
+    /**
+     * Chamado para armazenar o estado da Activity,
+     * antes que entre em background
+     * @param outState
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //Inclusão de chave-valor no mapa
+        outState.putSerializable("localArquivoFoto", localArquivoFoto);
+    }
+
+    /**
+     * Chamado para recuperar o estado anterior da Activity
+     * @param savedInstanceState
+     */
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        //Verifica se o mapa está nulo
+        if (savedInstanceState != null) {
+            localArquivoFoto = (String) savedInstanceState
+                    .getSerializable("localArquivoFoto");
+        }
+        //Carrega a foto, se necessário
+        if (localArquivoFoto != null) {
+            helper.carregarFoto(localArquivoFoto);
+        }
     }
 
     @Override
@@ -107,4 +179,5 @@ public class ProfessorForm extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
