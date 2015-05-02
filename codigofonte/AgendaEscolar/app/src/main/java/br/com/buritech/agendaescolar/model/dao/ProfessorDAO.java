@@ -130,5 +130,19 @@ public class ProfessorDAO extends SQLiteOpenHelper {
         }
         return lista;
     }
+
+    /**
+     * Chamado para exclusão de um professor
+     * @param professor O professor a ser excluído
+     */
+    public void excluir(Professor professor) {
+        // Definicao de array de parametros
+        String[] args = { professor.getId().toString() };
+
+        // Exclusão do Professor
+        getWritableDatabase().delete(TABELA, "id=?", args);
+
+        Log.i(TAG_LOGCAT, "Professor excluído: " + professor.getNome());
+    }
 }
 

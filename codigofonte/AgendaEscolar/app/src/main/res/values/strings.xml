@@ -23,4 +23,11 @@
     <string name="enviarDados">Enviar dados</string>
     <string name="disciplinas">Receber dados</string>
     <string name="preferencias">Preferências</string>
+    <!-- Chaves do menu de contexto -->
+    <string name="ligar">Ligar</string>
+    <string name="enviarSMS">Enviar SMS</string>
+    <string name="verNoMapa">Ver no Mapa</string>
+    <string name="navegarSite">Navegar no Site</string>
+    <string name="enviarEmail">Enviar E-mail</string>
+    <string name="excluir">Excluir</string>
 </resources>

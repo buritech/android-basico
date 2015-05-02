@@ -1,9 +1,13 @@
 package br.com.buritech.agendaescolar.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +28,8 @@ public class ProfessorLista extends ActionBarActivity {
     private ListView lvProfessores;
     //Coleção de professores;
     private List<Professor> listaDeProfessores;
+    //Professor selecionado no click da ListView
+    private Professor professorSelecionado;
 
     /**
      * Carrega a lista de professores
@@ -68,8 +74,8 @@ public class ProfessorLista extends ActionBarActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
                                            long id) {
-                Toast.makeText(ProfessorLista.this, "[Click longo] " + listaDeProfessores.get(position), Toast.LENGTH_LONG).show();
-                return true;
+                professorSelecionado = listaDeProfessores.get(position);
+                return false;
             }
         });
     }
@@ -93,6 +99,8 @@ public class ProfessorLista extends ActionBarActivity {
         lvProfessores = (ListView) findViewById(R.id.lvListagem);
         //Chama a configuração de clicks da ListView
         configurarClicksDaListagem();
+        //Informa que a ListView possui Menu de Contexto
+        registerForContextMenu(lvProfessores);
     }
 
     @Override
@@ -123,5 +131,108 @@ public class ProfessorLista extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Chamado para a contrução de menu de contexto da View
+     *
+     * @param menu     O menu de contexto que será carregado
+     * @param view     Objeto para o qual o menu de contexto está sendo contruído
+     * @param menuInfo Informação extra a cerca do item para o qual o menu é construído
+     */
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, view, menuInfo);
+        //Infla professormenucontexto.xml no menu de contexto
+        getMenuInflater().inflate(R.menu.professormenucontexto, menu);
+    }
+
+    /**
+     * Chamado quando um item do menu de contexto for selecionado
+     * @param item Objeto selecionado
+     * @return false para peritir o processamento do item clicado
+     */
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()){
+            case R.id.itemMenuContextoExcluir:
+                excluir();
+                break;
+            case R.id.itemMenuContextoLigar:
+                //Intent implicita para chamada telefônica
+                intent = new Intent(Intent.ACTION_CALL);
+                intent.setData(Uri.parse("tel:" + professorSelecionado.getTelefone()));
+                startActivity(intent);
+                break;
+            case R.id.itemMenuContextoEnviarSMS:
+                intent = new Intent(Intent.ACTION_VIEW);
+                //Marcação para envio de SMS
+                intent.setData(Uri.parse("sms:" + professorSelecionado.getTelefone()));
+                intent.putExtra("sms_body", "Mensagem de boas vindas :-)");
+                startActivity(intent);
+                break;
+            //Continua...
+            case R.id.itemMenuContextoVerNoMapa:
+                intent = new Intent(Intent.ACTION_VIEW);
+                //Marcação para exibição de mapa
+                intent.setData(Uri.parse("geo:0,0?z=14&q="
+                        + professorSelecionado.getEndereco()));
+                intent.putExtra("sms_body", "Mensagem de boas vindas :-)");
+                startActivity(intent);
+                break;
+            case R.id.itemMenuContextoNavagarSite:
+                intent = new Intent(Intent.ACTION_VIEW);
+                //Marcação para navegação na web
+                intent.setData(Uri.parse("http:" + professorSelecionado.getSite()));
+                startActivity(intent);
+                break;
+            // continua...
+            case R.id.itemMenuContextoEnviarEmail:
+                intent = new Intent(Intent.ACTION_SEND);
+                //Marcação para envio de email
+                intent.setType("message/rfc822");
+                intent.putExtra(Intent.EXTRA_EMAIL,
+                        new String[] { professorSelecionado.getEmail() });
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Falando sobre o curso");
+                intent.putExtra(Intent.EXTRA_TEXT, "O curso foi muito legal");
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    /**
+     * Exclui o professor do banco de dados e
+     * atualiza a listagem
+     */
+    private void excluir(){
+        //Criação do componente de confirmação de exclusão
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //Configuração da mensagem
+        builder.setMessage("Confirma a exclusão de: "+professorSelecionado.getNome()+"?");
+        //Configuração do botão de confirmação da exclusão
+        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ProfessorDAO dao = new ProfessorDAO(ProfessorLista.this);
+                //Execução do método de exclusão
+                dao.excluir(professorSelecionado);
+                dao.close();
+                //Atualização da listagem
+                carregarLista();
+                professorSelecionado = null;
+            }
+        });
+        //Configuração da opção de cancelamento da exclusão
+        builder.setNegativeButton("Não", null);
+        //Criação da caixa de diálogo
+        AlertDialog dialog = builder.create();
+        dialog.setTitle("Confirmação de operação");
+        //Exibição da caixa de diálogo
+        dialog.show();
     }
 }
