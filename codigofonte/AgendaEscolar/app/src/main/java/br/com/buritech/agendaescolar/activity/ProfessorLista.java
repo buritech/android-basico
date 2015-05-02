@@ -186,7 +186,6 @@ public class ProfessorLista extends ActionBarActivity {
                 //Marcação para exibição de mapa
                 intent.setData(Uri.parse("geo:0,0?z=14&q="
                         + professorSelecionado.getEndereco()));
-                intent.putExtra("sms_body", "Mensagem de boas vindas :-)");
                 startActivity(intent);
                 break;
             case R.id.itemMenuContextoNavagarSite:
