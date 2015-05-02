@@ -1,4 +1,4 @@
-package br.com.buritech.agendaescolar.bean;
+package br.com.buritech.agendaescolar.model.bean;
 
 /**
  * Created by marciopalheta on 01/05/15.

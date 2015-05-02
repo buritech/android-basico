@@ -3,9 +3,9 @@ package br.com.buritech.agendaescolar.helper;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import br.com.buritech.agendaescolar.ProfessorForm;
+import br.com.buritech.agendaescolar.activity.ProfessorForm;
 import br.com.buritech.agendaescolar.R;
-import br.com.buritech.agendaescolar.bean.Professor;
+import br.com.buritech.agendaescolar.model.bean.Professor;
 
 /**
  * Created by marciopalheta on 01/05/15.
@@ -45,5 +45,18 @@ public class ProfessorHelper {
         professor.setSite(site.getText().toString());
         professor.setEmail(email.getText().toString());
         return professor;
+    }
+
+    /**
+     * Chamado para atualização dos componentes de tela
+     * @param professor O professor a ser exibido na tela
+     */
+    public void setProfessor(Professor professor) {
+        nome.setText(professor.getNome());
+        telefone.setText(professor.getTelefone());
+        endereco.setText(professor.getEndereco());
+        site.setText(professor.getSite());
+        email.setText(professor.getEmail());
+        this.professor = professor;
     }
 }

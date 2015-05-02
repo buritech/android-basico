@@ -16,4 +16,11 @@
     <string name="enderecoHint">rua, número, bairro</string>
     <string name="salvarDados">Salvar dados</string>
     <string name="tituloProfessorLista">Professores</string>
+    <!-- Chaves do menu principal -->
+    <string name="novo">Novo</string>
+    <string name="mapa">Mapa</string>
+    <string name="mais_opcoes">Mais opções</string>
+    <string name="enviarDados">Enviar dados</string>
+    <string name="disciplinas">Receber dados</string>
+    <string name="preferencias">Preferências</string>
 </resources>

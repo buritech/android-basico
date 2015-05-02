@@ -1,4 +1,4 @@
-package br.com.buritech.agendaescolar;
+package br.com.buritech.agendaescolar.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -8,9 +8,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
-import br.com.buritech.agendaescolar.bean.Professor;
+import br.com.buritech.agendaescolar.R;
 import br.com.buritech.agendaescolar.helper.ProfessorHelper;
+import br.com.buritech.agendaescolar.model.bean.Professor;
+import br.com.buritech.agendaescolar.model.dao.ProfessorDAO;
 
 
 public class ProfessorForm extends ActionBarActivity {
@@ -30,7 +33,7 @@ public class ProfessorForm extends ActionBarActivity {
                 | ActionBar.DISPLAY_SHOW_TITLE);
         getSupportActionBar().setTitle(R.string.tituloProfessorForm);
 
-        botao = (Button)findViewById(R.id.sbSalvar);
+        botao = (Button) findViewById(R.id.sbSalvar);
         //Criação do Helper
         helper = new ProfessorHelper(this);
 
@@ -39,12 +42,17 @@ public class ProfessorForm extends ActionBarActivity {
             public void onClick(View v) {
                 //Solicitação de serviço do helper
                 Professor professor = helper.getProfessor();
-                //Impressõe bseada em métodos do professor
-                Log.d("SALVAR", professor.getNome());
-                Log.d("SALVAR", professor.getTelefone());
-                Log.d("SALVAR", professor.getSite());
-                Log.d("SALVAR", professor.getEmail());
-                Log.d("SALVAR", professor.getEndereco());
+                // Criação do Objeto DAO e início da conexão com o BD
+                ProfessorDAO dao = new ProfessorDAO(ProfessorForm.this);
+                // Chamada do método de cadastro de professor
+                dao.cadastrar(professor);
+                // Encerramento da conexão com o BD
+                dao.close();
+                //Feedback para o usuário com a mensagem de sucesso
+                Toast.makeText(ProfessorForm.this, "Professor(a) salvo(a): " +
+                        professor.getNome(), Toast.LENGTH_LONG).show();
+                //Fecha a tela atual
+                finish();
             }
         });
     }

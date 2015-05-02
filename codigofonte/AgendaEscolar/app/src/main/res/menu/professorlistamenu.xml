@@ -1,0 +1,43 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="br.com.buritech.agendaescolar.activity.ProfessorLista">
+    <!-- Primeiro item do Menu -->
+    <item
+        android:id="@+id/menuItemNovo"
+        android:icon="@drawable/ic_novo"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="1"
+        android:title="@string/novo"/>
+    <!-- Segundo item do Menu -->
+    <item
+        android:id="@+id/menuItemMapa"
+        android:icon="@drawable/ic_mapa"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="2"
+        android:title="@string/mapa"/>
+    <!-- Criação de submenus-->
+    <item
+        android:icon="@drawable/ic_opcoes"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="3"
+        android:title="@string/mais_opcoes">
+        <menu>
+            <item
+                android:id="@+id/menuItemEnviar"
+                android:icon="@drawable/ic_enviar"
+                app:showAsAction="ifRoom"
+                android:title="@string/enviarDados"/>
+            <item
+                android:id="@+id/menuItemReceber"
+                android:icon="@drawable/ic_receber"
+                app:showAsAction="ifRoom"
+                android:title="@string/disciplinas"/>
+            <item
+                android:id="@+id/menuItemPreferencias"
+                android:icon="@drawable/ic_preferencias"
+                app:showAsAction="ifRoom"
+                android:title="@string/preferencias"/>
+        </menu>
+    </item>
+</menu>
