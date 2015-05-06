@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bordaImagem">#80ab90</color>
+    <color name="linhaPar">#c6e6d2</color>
+    <color name="linhaImpar">#a0d6b4</color>
+    <color name="texto">#202a24</color>
+</resources>

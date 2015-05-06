@@ -12,13 +12,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.com.buritech.agendaescolar.R;
+import br.com.buritech.agendaescolar.adapter.ProfessorListaAdapter;
 import br.com.buritech.agendaescolar.model.bean.Professor;
 import br.com.buritech.agendaescolar.model.dao.ProfessorDAO;
 
@@ -34,23 +33,14 @@ public class ProfessorLista extends ActionBarActivity {
      * Carrega a lista de professores
      */
     private void carregarLista() {
-        // Componentes que converte Strings em Views
-        ArrayAdapter<String> adapter;
-        // Layout da listagem
-        int adapterLayout = android.R.layout.simple_list_item_1;
-        List<String> listaTemporaria = new ArrayList<>();
-
+        // Componentes que converte Professores em Views
+        ProfessorListaAdapter adapter;
         //Carregar a lista a partir do banco de dados
         ProfessorDAO dao = new ProfessorDAO(this);
         listaDeProfessores = dao.listar();
         dao.close();
-        //Atualizar a listagem temporária de nomes
-        for (Professor professor : listaDeProfessores) {
-            listaTemporaria.add(professor.getNome());
-        }
-        //Criação do adaptador
-        adapter = new ArrayAdapter<>(this, adapterLayout,
-                listaTemporaria);
+        //Criação do adaptador customizado
+        adapter = new ProfessorListaAdapter(this, listaDeProfessores);
         //Associação do adapter ao listView
         lvProfessores.setAdapter(adapter);
     }
