@@ -20,6 +20,7 @@ import br.com.buritech.agendaescolar.R;
 import br.com.buritech.agendaescolar.adapter.ProfessorListaAdapter;
 import br.com.buritech.agendaescolar.model.bean.Professor;
 import br.com.buritech.agendaescolar.model.dao.ProfessorDAO;
+import br.com.buritech.agendaescolar.task.ProfessorTask;
 
 public class ProfessorLista extends ActionBarActivity {
     // Atributos de controle
@@ -117,14 +118,14 @@ public class ProfessorLista extends ActionBarActivity {
         //Variável para transição de telas
         Intent intent;
         //Recupera o id do item do menu selecionado
-        int id = item.getItemId();
-        //Click no botão para cadastro de professores
-        if (id == R.id.menuItemNovo) {
-            // Cria a intenção de transição da origem(this)
-            // para o destino (ProfessorForm)
-            intent = new Intent(this, ProfessorForm.class);
-            startActivity(intent);
-            return true;
+        switch (item.getItemId()) {
+            case R.id.menuItemNovo:
+                intent = new Intent(this, ProfessorForm.class);
+                startActivity(intent);
+                return false;
+            case R.id.menuItemEnviar:
+                new ProfessorTask(this).execute();
+                return false;
         }
         return super.onOptionsItemSelected(item);
     }
