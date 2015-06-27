@@ -1,4 +1,5 @@
 package br.com.buritech.agendaescolar.task;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -10,11 +11,13 @@ import br.com.buritech.agendaescolar.converter.ProfessorConverter;
 import br.com.buritech.agendaescolar.integracao.WebClient;
 import br.com.buritech.agendaescolar.model.bean.Professor;
 import br.com.buritech.agendaescolar.model.dao.ProfessorDAO;
-public class ProfessorTask extends AsyncTask<Object, Object, String>{
+
+public class ProfessorTask extends AsyncTask<Object, Object, String> {
     //Servidor para teste JSON: http://www.jsontest.com/
     //private final String url = "http://ip.jsontest.com/";
-    private final String url =
-            "http://192.168.1.129:8080/AlunoWeb/receber-json";
+    private final String url = "http://192.168.1.168:8080/AlunoWeb/receber-json";
+    //private final String url = "http://192.168.1.168:8080/listakiweb/rest/usuario/receberlistausuario";
+
 
     // Contexto (tela) para exibicao de mensagens
     private Context context;
@@ -35,8 +38,10 @@ public class ProfessorTask extends AsyncTask<Object, Object, String>{
         progress = ProgressDialog.show(context, "Aguarde...",
                 "Enviando dados para o servidor web", true, true);
     }
+
     /**
      * Método de callback invocado após a conclusão da tarefa
+     *
      * @param result
      */
     protected void onPostExecute(String result) {
@@ -48,6 +53,7 @@ public class ProfessorTask extends AsyncTask<Object, Object, String>{
 
     /**
      * Método de execução da tarefa - Envio de dados de professores
+     *
      * @param params
      * @return String com a resposta do servidor
      */
@@ -58,6 +64,8 @@ public class ProfessorTask extends AsyncTask<Object, Object, String>{
         dao.close();
         //Conversão da lista para JSON
         String json = new ProfessorConverter().toJSON(lista);
+        //Gson gson = new Gson();
+        //String json = gson.toJson(lista);
         //Envio de dados para o servidor remoto
         String jsonResposta = new WebClient(url).post(json);
         //Devolvendo a resposta do servidor
